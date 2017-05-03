@@ -43,6 +43,7 @@ alias flux="open /Applications/Flux.app"
 alias rds="killall Flux || redshift -O"
 alias rds.stop="killall redshift && flux"
 alias rds.n="rds 1800 && rds 1800 &"
+alias lavorare="open /Applications/Slack.app /Applications/Atom.app /Applications/Spotify.app"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -134,3 +135,10 @@ source ~/.zsh/aliases.zsh
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 source ~/.nvm/nvm.sh
+
+# Alinity PRO docker env
+function alinityproenv() { COMMIT=$(git rev-parse $1) LOCAL_ALIAS=localhost docker-compose -f ../qia-vm/builder/docker-compose.yml -f ../qia-vm/builder/docker-compose-dev.yml up --force-recreate -d }
+
+function alinityproenv-web-build() { docker run -it --rm -v $(pwd):/srv -w /srv node:6.10 rm -rf node_modules; yarn --no-progress; NODE_ENV=production API_ENDPOINT=/api npm run build }
+
+function alinityproenv-web-run() { cp -r ./build ./deploy; (cd deploy && docker build -t alinitypro-web-tmp .); docker run -v $(pwd)/../../../qia-vm/builder/service-config/od-web/nginx.conf:/etc/nginx/conf.d/default.conf --link operational-dashboard-web-api --rm --network builder_default -p 8100:80 alinitypro-web-tmp }
