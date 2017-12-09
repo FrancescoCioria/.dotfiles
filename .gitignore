@@ -2,4 +2,5 @@
 /zsh/cache
 /vim/bundle
 !/vim/bundle/vundle
+.vscode
 **/.DS_Store
